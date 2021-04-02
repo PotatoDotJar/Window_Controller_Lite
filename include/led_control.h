@@ -9,7 +9,8 @@ enum class StatusColors : uint8_t
     HOMING = 2,
     RESTARTING = 3,
     ERROR = 4,
-    OFF = 5
+    OFF = 5,
+    STANDBY = 6
 };
 
 // Error event definitions
@@ -105,10 +106,13 @@ void LedControl::setStatusLedColor(StatusColors newColor, bool dimLed)
         statusLedColor[0] = CRGB::GreenYellow;
         break;
     case StatusColors::ERROR:
-        statusLedColor[0] = CRGB::IndianRed;
+        statusLedColor[0] = CRGB::Red;
         break;
     case StatusColors::OFF:
         statusLedColor[0] = CRGB::Black;
+        break;
+    case StatusColors::STANDBY:
+        statusLedColor[0] = CRGB::Blue;
         break;
     default:
         break;
@@ -130,7 +134,7 @@ void LedControl::setBaseStatus()
     }
     else
     {
-        setStatusLedColor(StatusColors::OFF);
+        setStatusLedColor(StatusColors::STANDBY);
     }
 }
 
@@ -190,7 +194,6 @@ void LedControl::begin()
     FastLED.setBrightness(255);
     setStatusLedColor(StatusColors::OFF);
     FastLED.show(); // Write data to led
-    Serial.println("Test");
 }
 
 void LedControl::handle()

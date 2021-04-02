@@ -94,6 +94,7 @@ void MotorControl::InitialWindowSetup()
                     stepper.stop();
                     Serial.println("Window initially closed.");
                     setCurrentWindowState(WindowState::CLOSED);
+                    LedControl::setBaseStatus();
                     running = false;
                 }
 
@@ -102,12 +103,14 @@ void MotorControl::InitialWindowSetup()
                     stepper.stop();
                     Serial.println("Endstop has not been reached yet, stopping. Check window.");
                     setCurrentWindowState(WindowState::CLOSING_ERROR);
+                    LedControl::setErrorHasOccurred(true, ErrorCode::MOTOR_ENDSTOP_ERROR);
+                    LedControl::setBaseStatus();
                     running = false;
                 }
             }
 
             disableStepper();
-            LedControl::setBaseStatus();
+            
         }
     }
 }
